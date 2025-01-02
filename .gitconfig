@@ -1,0 +1,12 @@
+[user]
+	name = Kevin Bi
+	email = kevinbi075@gmail.com
+	signingkey = ~/.ssh/id_ed25519.pub
+[rebase]
+	updateRefs = true
+[push]
+	autoSetupRemote = true
+[gpg]
+	format = ssh
+[core]
+	excludesfile = ~/.gitignore
