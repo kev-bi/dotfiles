@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "Setting up your Mac..."
 
@@ -10,7 +10,7 @@ export DOTFILES="$HOME/.dotfiles"
 if ! command -v brew >/dev/null 2>&1; then
   echo "Installing brew..."
 
-  /bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.zprofile
   eval "$(/opt/homebrew/bin/brew shellenv)"
 
@@ -30,10 +30,10 @@ if ! command -v zsh >/dev/null 2>&1; then
 fi
 
 # Check for Oh My Zsh and install if we don't have it
-if ! command -v omz >/dev/null 2>&1; then
+if [[ ! -n $ZSH ]]; then
   echo "Installing oh-my-zsh..."
 
-  /bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/HEAD/tools/install.sh)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/HEAD/tools/install.sh)"
 fi
 
 # Removes the .oh-my-zsh/custom dir and symlinks the oh-my-zsh/custom dir from the .dotfiles
@@ -45,7 +45,7 @@ ln -sw $DOTFILES/oh-my-zsh/custom $HOME/.oh-my-zsh/custom
 if [[ -f $HOME/.zshrc ]]; then
   if [[ ! -L $HOME/.zshrc ]]; then
     mv $HOME/.zshrc $HOME/.zshrc.dfsave
-  else;
+  else
     rm $HOME/.zshrc
   fi
 fi
@@ -58,7 +58,7 @@ echo "Setting up Vim..."
 if [[ -d $HOME/.vim ]]; then
   if [[ ! -L $HOME/.vim ]]; then
     mv $HOME/.vim $HOME/.vim.dfsave
-  else;
+  else
     rm $HOME/.vim
   fi
 fi
@@ -69,7 +69,7 @@ ln -sw $DOTFILES/vim $HOME/.vim
 if [[ -f $HOME/.vimrc ]]; then
   if [[ ! -L $HOME/.vimrc ]]; then
     mv $HOME/.vimrc $HOME/.vimrc.dfsave
-  else;
+  else
     rm $HOME/.vimrc
   fi
 fi
@@ -82,7 +82,7 @@ echo "Setting up git..."
 if [[ -f $HOME/.gitconfig ]]; then
   if [[ ! -L $HOME/.gitconfig ]]; then
     mv $HOME/.gitconfig $HOME/.gitconfig.dfsave
-  else;
+  else
     rm $HOME/.gitconfig
   fi
 fi
@@ -93,7 +93,7 @@ ln -sw $DOTFILES/.gitconfig $HOME/.gitconfig
 if [[ -f $HOME/.gitignore ]]; then
   if [[ ! -L $HOME/.gitignore ]]; then
     mv $HOME/.gitignore $HOME/.gitignore.dfsave
-  else;
+  else
     rm $HOME/.gitignore
   fi
 fi

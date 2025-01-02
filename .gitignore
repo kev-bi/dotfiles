@@ -1,3 +1,8 @@
+# vim backup files #
+######################
+vim/backup/
+
+
 # OS generated files #
 ######################
 .DS_Store
