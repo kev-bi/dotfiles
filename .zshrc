@@ -103,14 +103,8 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-###############################################################################
-#                        Personal customizations to zsh                       #
-###############################################################################
-# Find compinit and autoload
-autoload -U compinit; compinit
-
-# Add export to go to .dotfiles
+# Path to dotfiles
 export DOTFILES="$HOME/.dotfiles"
 
-# Use ".venv" as virtual env name for python plugin
+# Set ".venv" as virtual env name for python plugin
 export PYTHON_VENV_NAME=".venv"
