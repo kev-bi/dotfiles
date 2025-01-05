@@ -36,10 +36,9 @@ if [[ ! -n $ZSH ]]; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/HEAD/tools/install.sh)"
 fi
 
-# Removes the .oh-my-zsh/custom dir and symlinks the oh-my-zsh/custom dir from the .dotfiles
-# No point in backing up or renaming since it's always available on github
-rm -rf $HOME/.oh-my-zsh/custom
-ln -sw $DOTFILES/oh-my-zsh/custom $HOME/.oh-my-zsh/custom
+# If the custom dir is symlinked Oh My Zsh errors when updating so copy over the files
+# TODO: Add copying to the plugin and themes sub dirs
+cp $DOTFILES/oh-my-zsh/custom/*(.) $HOME/.oh-my-zsh/custom
 
 # Handle existing .zshrc file (if it exists); backup unless it's a soft link
 if [[ -f $HOME/.zshrc ]]; then
