@@ -10,3 +10,5 @@
 	format = ssh
 [core]
 	excludesfile = ~/.gitignore
+[commit]
+	gpgsign = true
