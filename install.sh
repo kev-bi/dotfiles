@@ -36,9 +36,16 @@ if [[ ! -n $ZSH ]]; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/HEAD/tools/install.sh)"
 fi
 
-# If the custom dir is symlinked Oh My Zsh errors when updating so copy over the files
-# TODO: Add copying to the plugin and themes sub dirs
+# Copy over dotfiles custom directory files and subdirectories to the
+# Oh My Zsh custom directory. This is a workaround because if the custom
+# directory is a softlink Oh My Zsh errors when updating.
 cp $DOTFILES/oh-my-zsh/custom/*(.) $HOME/.oh-my-zsh/custom
+if [[ -d $DOTFILES/oh-my-zsh/custom/plugins ]]; then
+  cp -r $DOTFILES/oh-my-zsh/custom/plugins/* $HOME/.oh-my-zsh/custom/plugins
+fi
+if [[ -d $DOTFILES/oh-my-zsh/custom/themes ]]; then
+  cp $DOTFILES/oh-my-zsh/custom/themes/* $HOME/.oh-my-zsh/custom/themes
+fi
 
 # Handle existing .zshrc file (if it exists); backup unless it's a soft link
 if [[ -f $HOME/.zshrc ]]; then
