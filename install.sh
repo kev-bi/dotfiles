@@ -39,7 +39,7 @@ fi
 # Copy over dotfiles custom directory files and subdirectories to the
 # Oh My Zsh custom directory. This is a workaround because if the custom
 # directory is a softlink Oh My Zsh errors when updating.
-cp $DOTFILES/oh-my-zsh/custom/*(.) $HOME/.oh-my-zsh/custom
+find $DOTFILES/oh-my-zsh/custom -type f -exec cp {} $HOME/.oh-my-zsh/custom \;
 if [[ -d $DOTFILES/oh-my-zsh/custom/plugins ]]; then
   cp -r $DOTFILES/oh-my-zsh/custom/plugins/* $HOME/.oh-my-zsh/custom/plugins
 fi
