@@ -1,3 +1,6 @@
 [submodule "vim/plugged/nerdtree"]
 	path = vim/plugged/nerdtree
 	url = git@github.com:preservim/nerdtree.git
+[submodule "vim/plugged/papercolor-theme"]
+	path = vim/plugged/papercolor-theme
+	url = git@github.com:NLKNguyen/papercolor-theme.git

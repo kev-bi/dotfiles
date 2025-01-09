@@ -86,12 +86,6 @@ set wildmode=list:longest
 " Wildmenu will ignore files with these extensions.
 set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
 
-" Set the background tone.
-set background=dark
-
-" Set the color scheme.
-colorscheme molokai
-
 " Hide buffers instead of closing them.
 set hidden
 
@@ -106,6 +100,7 @@ endif
 
 call plug#begin('~/.vim/plugged')
   Plug 'preservim/nerdtree'
+  Plug 'NLKNguyen/papercolor-theme'
 call plug#end()
 
 " }}}
@@ -198,3 +193,10 @@ set statusline+=\ ascii:\ %b\ hex:\ 0x%B\ row:\ %l\ col:\ %c\ percent:\ %p%%
 set laststatus=2
 
 " }}}
+"
+" Set the background tone.
+set background=dark
+
+" Set the color scheme.
+colorscheme PaperColor 
+
