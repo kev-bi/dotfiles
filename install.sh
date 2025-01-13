@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "Setting up your Mac..."
+echo "Setting up your system..."
 
 # Export env variables
 export DOTFILES="$HOME/.dotfiles"
@@ -11,8 +11,16 @@ if ! command -v brew >/dev/null 2>&1; then
   echo "Installing brew..."
 
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.zprofile
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+  if [ $(uname) == "Darwin" ]; then
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  elif [ $(uname) == "Linux" ]; then
+    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $HOME/.zprofile
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  else
+    echo "Unrecognized system, couldn't install brew..."
+    exit 1
+  fi
 
   # Update Homebrew recipes
   brew update
@@ -25,7 +33,13 @@ if ! command -v zsh >/dev/null 2>&1; then
   echo "Installing zsh..."
 
   brew install zsh
+
+  # Add zsh to the list of valid shells
+  echo "Adding the following path to the list of valid shells..."
+  command -v zsh | sudo tee -a /etc/shells
+
   # Make zsh the default environment
+  echo "Changing login shell to zsh..."
   chsh -s $(which zsh)
 fi
 
@@ -56,7 +70,7 @@ if [[ -f $HOME/.zshrc ]]; then
   fi
 fi
 # Symlinks the .zshrc file from the .dotfiles
-ln -sw $DOTFILES/.zshrc $HOME/.zshrc
+ln -s $DOTFILES/.zshrc $HOME/.zshrc
 
 echo "Setting up Vim..."
 
@@ -69,7 +83,7 @@ if [[ -d $HOME/.vim ]]; then
   fi
 fi
 # Symlinks the .vim dir from the .dotfiles
-ln -sw $DOTFILES/vim $HOME/.vim
+ln -s $DOTFILES/vim $HOME/.vim
 
 # Handle existing .vimrc file (if it exists); backup unless it's a soft link
 if [[ -f $HOME/.vimrc ]]; then
@@ -80,7 +94,7 @@ if [[ -f $HOME/.vimrc ]]; then
   fi
 fi
 # Symlinks the .vimrc file from the .dotfiles
-ln -sw $DOTFILES/.vimrc $HOME/.vimrc
+ln -s $DOTFILES/.vimrc $HOME/.vimrc
 
 echo "Setting up git..."
 
@@ -93,7 +107,7 @@ if [[ -f $HOME/.gitconfig ]]; then
   fi
 fi
 # Symlinks the .gitconfig file from the .dotfiles
-ln -sw $DOTFILES/.gitconfig $HOME/.gitconfig
+ln -s $DOTFILES/.gitconfig $HOME/.gitconfig
 
 # Handle existing .gitignore file (if it exists); backup unless it's a soft link
 if [[ -f $HOME/.gitignore ]]; then
@@ -104,7 +118,7 @@ if [[ -f $HOME/.gitignore ]]; then
   fi
 fi
 # Symlinks the .gitignore file from the .dotfiles
-ln -sw $DOTFILES/.gitignore $HOME/.gitignore
+ln -s $DOTFILES/.gitignore $HOME/.gitignore
 
 # Check for magic and install if we don't have it
 if ! command -v magic >/dev/null 2>&1; then

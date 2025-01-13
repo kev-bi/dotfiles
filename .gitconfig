@@ -10,5 +10,6 @@
 	format = ssh
 [core]
 	excludesfile = ~/.gitignore
+	editor = vim
 [commit]
 	gpgsign = true
