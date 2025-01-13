@@ -106,5 +106,12 @@ fi
 # Symlinks the .gitignore file from the .dotfiles
 ln -sw $DOTFILES/.gitignore $HOME/.gitignore
 
+# Check for magic and install if we don't have it
+if ! command -v magic >/dev/null 2>&1; then
+  echo "Installing magic..."
+
+  curl -ssL https://magic.modular.com/deb16053-d972-4668-8267-c3b15bf88019 | bash
+fi
+
 # Reload the shell
 exec zsh
