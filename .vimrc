@@ -193,7 +193,7 @@ set statusline+=\ ascii:\ %b\ hex:\ 0x%B\ row:\ %l\ col:\ %c\ percent:\ %p%%
 set laststatus=2
 
 " }}}
-"
+
 " Set the background tone.
 set background=dark
 
