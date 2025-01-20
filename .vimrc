@@ -99,8 +99,9 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-  Plug 'preservim/nerdtree'
   Plug 'NLKNguyen/papercolor-theme'
+  Plug 'preservim/nerdtree'
+  Plug 'ziglang/zig.vim'
 call plug#end()
 
 " }}}

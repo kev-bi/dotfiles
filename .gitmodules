@@ -4,3 +4,6 @@
 [submodule "vim/plugged/papercolor-theme"]
 	path = vim/plugged/papercolor-theme
 	url = git@github.com:NLKNguyen/papercolor-theme.git
+[submodule "vim/plugged/zig.vim"]
+	path = vim/plugged/zig.vim
+	url = git@github.com:ziglang/zig.vim.git
