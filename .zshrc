@@ -70,7 +70,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(aliases git python)
+plugins=(aliases git kubectl python)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -114,3 +114,9 @@ export PATH="/home/kbi/.modular/bin:$PATH"
 
 # Enable auto-completion for magic,
 eval "$(magic completion --shell zsh)"
+
+# Generate the kubectl completion script for Zsh
+source <(kubectl completion zsh)
+
+# Generate the minikube completion script for Zsh
+source <(minikube completion zsh)

@@ -7,11 +7,11 @@ add_to_path() {
 
 # Function wrapping the dotfiles custom dir copy over commands
 cp_zsh_custom() {
-  cp $DOTFILES/oh-my-zsh/custom/*(.) $HOME/.oh-my-zsh/custom
+  cp $DOTFILES/oh-my-zsh/custom/*(.) ${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}
   if [[ -d $DOTFILES/oh-my-zsh/custom/plugins ]]; then
-    cp -r $DOTFILES/oh-my-zsh/custom/plugins/* $HOME/.oh-my-zsh/custom/plugins
+    cp -r $DOTFILES/oh-my-zsh/custom/plugins/* ${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom/plugins}
   fi
   if [[ -d $DOTFILES/oh-my-zsh/custom/themes ]]; then
-    cp $DOTFILES/oh-my-zsh/custom/themes/* $HOME/.oh-my-zsh/custom/themes
+    cp $DOTFILES/oh-my-zsh/custom/themes/* ${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom/themes}
   fi
 }
