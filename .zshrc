@@ -110,7 +110,7 @@ export DOTFILES="$HOME/.dotfiles"
 export PYTHON_VENV_NAME=".venv"
 
 # Put magic in the path
-export PATH="/home/kbi/.modular/bin:$PATH"
+ export PATH="$HOME/.modular/bin:$PATH"
 
 # Enable auto-completion for magic,
 eval "$(magic completion --shell zsh)"
