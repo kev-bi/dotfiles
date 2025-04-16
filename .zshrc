@@ -120,3 +120,6 @@ source <(kubectl completion zsh)
 
 # Generate the minikube completion script for Zsh
 source <(minikube completion zsh)
+
+# Generate the helm completion script for Zsh
+source <(helm completion zsh)

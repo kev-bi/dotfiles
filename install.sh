@@ -2,6 +2,18 @@
 
 echo "Setting up your system..."
 
+# Parse command line args
+# See https://rowannicholls.github.io/bash/intro/passing_arguments.html
+while [[ "$#" -gt 0 ]]
+do case $1 in
+    -b|--brew) brew=true
+    shift;;
+esac
+shift
+done
+
+INSTALL_BREWFILE=${brew:-false}
+
 # Export env variables
 export DOTFILES="$HOME/.dotfiles"
 
@@ -24,6 +36,12 @@ if ! command -v brew >/dev/null 2>&1; then
 
   # Update Homebrew recipes
   brew update
+
+  # Install all our dependencies with bundle (See Brewfile)
+  if [ $INSTALL_BREWFILE = true ]; then
+    brew tap homebrew/bundle
+    brew bundle --file ./Brewfile
+  fi
 fi
 
 echo "Setting up zsh & oh-my-zsh..."
