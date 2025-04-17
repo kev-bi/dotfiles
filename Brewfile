@@ -1,3 +1,4 @@
-brew kubernetes-cli
-brew helm
-brew minikube
+brew "kubernetes-cli"
+brew "helm"
+brew "minikube"
+brew "kubebuilder"

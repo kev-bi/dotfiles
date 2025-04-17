@@ -7,7 +7,6 @@ echo "Setting up your system..."
 while [[ "$#" -gt 0 ]]
 do case $1 in
     -b|--brew) brew=true
-    shift;;
 esac
 shift
 done
@@ -33,15 +32,14 @@ if ! command -v brew >/dev/null 2>&1; then
     echo "Unrecognized system, couldn't install brew..."
     exit 1
   fi
+fi
 
-  # Update Homebrew recipes
-  brew update
+# Update Homebrew recipes
+brew update
 
-  # Install all our dependencies with bundle (See Brewfile)
-  if [ $INSTALL_BREWFILE = true ]; then
-    brew tap homebrew/bundle
-    brew bundle --file ./Brewfile
-  fi
+# Install all our dependencies with bundle (See Brewfile)
+if [ $INSTALL_BREWFILE = true ]; then
+  brew bundle --file ./Brewfile
 fi
 
 echo "Setting up zsh & oh-my-zsh..."
@@ -55,10 +53,6 @@ if ! command -v zsh >/dev/null 2>&1; then
   # Add zsh to the list of valid shells
   echo "Adding the following path to the list of valid shells..."
   command -v zsh | sudo tee -a /etc/shells
-
-  # Make zsh the default environment
-  echo "Changing login shell to zsh..."
-  chsh -s $(which zsh)
 fi
 
 # Check for Oh My Zsh and install if we don't have it
