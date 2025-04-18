@@ -6,12 +6,15 @@ echo "Setting up your system..."
 # See https://rowannicholls.github.io/bash/intro/passing_arguments.html
 while [[ "$#" -gt 0 ]]
 do case $1 in
-    -b|--brew) brew=true
+    -bf|--brewfile) brewfile=true
+    shift;;
+    -sk|--ssh-keygen) email=$2
+    shift;;
 esac
 shift
 done
 
-INSTALL_BREWFILE=${brew:-false}
+INSTALL_BREWFILE=${brewfile:-false}
 
 # Export env variables
 export DOTFILES="$HOME/.dotfiles"
@@ -137,6 +140,18 @@ if ! command -v magic >/dev/null 2>&1; then
   echo "Installing magic..."
 
   curl -ssL https://magic.modular.com/deb16053-d972-4668-8267-c3b15bf88019 | bash
+fi
+
+if [[ -n "${email+1}" ]]; then
+  ssh-keygen -t ed25519 -C $email
+  eval "$(ssh-agent -s)"
+  if [ $(uname) == "Darwin" ]; then
+    ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+  elif [ $(uname) == "Linux" ]; then
+    ssh-add ~/.ssh/id_ed25519
+  else
+    echo "Unrecognized system, couldn't install setup ssh-key..."
+  fi
 fi
 
 # Reload the shell
