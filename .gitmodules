@@ -7,3 +7,6 @@
 [submodule "vim/plugged/zig.vim"]
 	path = vim/plugged/zig.vim
 	url = git@github.com:ziglang/zig.vim.git
+[submodule "vim/plugged/ale"]
+	path = vim/plugged/ale
+	url = https://github.com/dense-analysis/ale.git

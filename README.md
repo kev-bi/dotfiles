@@ -45,6 +45,16 @@ You can try again using:
 
 In this case you will need to follow these directions to install some additional [requirements](https://docs.brew.sh/Homebrew-on-Linux#requirements). Then ` brew postinstall gcc` should work.
 
+# Vim
+
+When installing new plugins
+
+1. Save the .vimrc file - `:w`
+
+2. Source the .vimrc file - `:source ~/.vimrc`
+
+3. `:PlugInstall`
+
 # Acknowledgements / Resources
 
 - Dries Vints' [dotfiles](https://github.com/driesvints/dotfiles)

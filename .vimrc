@@ -100,6 +100,7 @@ endif
 
 call plug#begin('~/.vim/plugged')
   Plug 'NLKNguyen/papercolor-theme'
+  Plug 'dense-analysis/ale'
   Plug 'preservim/nerdtree'
   Plug 'ziglang/zig.vim'
 call plug#end()
@@ -193,6 +194,12 @@ set statusline+=\ ascii:\ %b\ hex:\ 0x%B\ row:\ %l\ col:\ %c\ percent:\ %p%%
 " Show the status on the second to last line.
 set laststatus=2
 
+" }}}
+
+" ALE  ---------------------------------------------------------------- {{{
+let g:ale_linters = {
+  \ 'go': ['gopls'],
+  \}
 " }}}
 
 " Set the background tone.
