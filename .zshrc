@@ -123,3 +123,6 @@ source <(minikube completion zsh)
 
 # Generate the helm completion script for Zsh
 source <(helm completion zsh)
+
+# Generate the kubebuilder completion script for Zsh
+source <(kubebuilder completion zsh)

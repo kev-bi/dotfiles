@@ -28,7 +28,7 @@
     -sk|--ssh-keygen "your_email@example.com"
     ```
 
-3. [Generate](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) a new ssh key if you didn't pass the `-bf` or `--brewfile` flag in the previous step
+3. [Generate](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) a new ssh key if you didn't pass the `-sk` or `--ssh-key` flag in the previous step
 
 4. [Add](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) the new ssh key to your github account
 
