@@ -37,6 +37,7 @@
 ## brew install gcc
 
 When installing gcc with brew there is a possibility you will get the following error:
+
 ```
 Warning: The post-install step did not complete successfully
 You can try again using:
@@ -47,7 +48,17 @@ In this case you will need to follow these directions to install some additional
 
 # Vim
 
-When installing new plugins
+## Setting up Go LSP
+
+1. Install gopls with `go get -v golang.org/x/tools/gopl`
+
+## Setting up Python Linting and LSP
+
+1. Create virtual environment for the directory with `mkv`
+
+2. Install dependencies (pylsp, ruff etc) with `pip install -r  requirements.txt`
+
+## Installing new plugins
 
 1. Save the .vimrc file - `:w`
 
