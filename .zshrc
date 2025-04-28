@@ -237,7 +237,7 @@ _fzf_complete_stog() { _fzf_complete_bazel_test "$@" }
 
 __aws_sso_profile_complete() {
      local _args=${AWS_SSO_HELPER_ARGS:- -L error}
-    _multi_parts : "($(/opt/homebrew/bin/aws-sso ${=_args} list --csv Profile))"
+    _multi_parts : "($(/home/linuxbrew/.linuxbrew/bin/aws-sso ${=_args} list --csv Profile))"
 }
 
 aws-sso-profile() {
@@ -252,7 +252,7 @@ aws-sso-profile() {
         return 1
     fi
 
-    eval $(/opt/homebrew/bin/aws-sso ${=_args} eval -p "$1")
+    eval $(/home/linuxbrew/.linuxbrew/bin/aws-sso ${=_args} eval -p "$1")
     if [ "$AWS_SSO_PROFILE" != "$1" ]; then
         return 1
     fi
@@ -264,11 +264,11 @@ aws-sso-clear() {
         echo "AWS_SSO_PROFILE is not set"
         return 1
     fi
-    eval $(/opt/homebrew/bin/aws-sso ${=_args} eval -c)
+    eval $(/home/linuxbrew/.linuxbrew/bin/aws-sso ${=_args} eval -c)
 }
 
 compdef __aws_sso_profile_complete aws-sso-profile
-complete -C /opt/homebrew/bin/aws-sso aws-sso
+complete -C /home/linuxbrew/.linuxbrew/bin/aws-sso aws-sso
 
 # END_AWS_SSO_CLI
 
