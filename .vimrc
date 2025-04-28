@@ -101,6 +101,8 @@ endif
 call plug#begin('~/.vim/plugged')
   Plug 'NLKNguyen/papercolor-theme'
   Plug 'dense-analysis/ale'
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+  Plug 'junegunn/fzf.vim'
   Plug 'preservim/nerdtree'
   Plug 'ziglang/zig.vim'
 call plug#end()
@@ -217,4 +219,3 @@ set background=dark
 
 " Set the color scheme.
 colorscheme PaperColor 
-
