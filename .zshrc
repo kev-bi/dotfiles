@@ -157,7 +157,7 @@ source <(kubebuilder completion zsh)
 
 # Explicitly set SDKRoot to the system SDK.
 # https://stackoverflow.com/questions/51761599/cannot-find-stdio-h
-export SDKROOT=$(xcrun --sdk macosx --show-sdk-path)
+# export SDKROOT=$(xcrun --sdk macosx --show-sdk-path)
 
 # Enable for pyenv.
 # See https://github.com/pyenv/pyenv.
