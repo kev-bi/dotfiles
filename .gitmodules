@@ -13,3 +13,6 @@
 [submodule "vim/plugged/fzf.vim"]
 	path = vim/plugged/fzf.vim
 	url = https://github.com/junegunn/fzf.git
+[submodule "mojo.vim"]
+	path = mojo.vim
+	url = https://github.com/modular/mojo.vim.git
