@@ -31,6 +31,7 @@ argo_passwd() {
 
 # Easy way to login for AWS
 aws_plz() {
+  aws-sso login
   aws-sso-profile `aws-sso | fzf | awk -F ' *\\| *' '{print $7}'`
 }
 
