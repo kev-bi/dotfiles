@@ -12,7 +12,7 @@
     git submodule update --remote
     ```
 
-2. Run the install script
+2. Run the install script (possibly you will need to run this command twice after ZSH install?)
 
     ```
     cd ~/.dotfiles && source install.sh
