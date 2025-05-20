@@ -36,7 +36,7 @@ aws_plz() {
     return 1
   fi
   aws-sso login
-  aws-sso-profile `echo ${AWS_PWD} | aws-sso | fzf | awk -F ' *\\| *' '{print $7}'`
+  aws-sso-profile `echo ${AWS_PWD} | aws-sso | fzf | awk -F ' *| *' '{print $7}'`
 }
 
 # Install krew
