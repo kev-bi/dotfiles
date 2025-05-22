@@ -61,6 +61,7 @@ fi
 # Check for Oh My Zsh and install if we don't have it
 if [[ ! -n $ZSH ]]; then
   echo "Installing oh-my-zsh..."
+  echo "NOTICE: Once zsh is set up you may need to log out and log in..."
 
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/HEAD/tools/install.sh)"
 fi
