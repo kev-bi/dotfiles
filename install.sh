@@ -136,6 +136,17 @@ fi
 # Symlinks the .gitignore file from the .dotfiles
 ln -s $DOTFILES/.gitignore $HOME/.gitignore
 
+# Handle existing .tmux.conf file (if it exists); backup unless it's a soft link
+if [[ -f $HOME/.tmux.conf ]]; then
+  if [[ ! -L $HOME/.tmux.conf ]]; then
+    mv $HOME/.tmux.conf $HOME/.tmux.conf.dfsave
+  else
+    rm $HOME/.tmux.conf
+  fi
+fi
+# Symlinks the .tmux.conf file from the .dotfiles
+ln -s $DOTFILES/.tmux.conf $HOME/.tmux.conf
+
 # Check for magic and install if we don't have it
 if ! command -v magic >/dev/null 2>&1; then
   echo "Installing magic..."
