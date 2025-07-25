@@ -239,6 +239,10 @@ done
 git_sync https://github.com/zsh-users/zsh-autosuggestions.git "$ZSH_CUSTOM_DIR/plugins/zsh-autosuggestions"
 # https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md#oh-my-zsh
 git_sync https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM_DIR/plugins/zsh-syntax-highlighting"
+# https://github.com/zsh-users/zsh-completions#oh-my-zsh
+git_sync https://github.com/zsh-users/zsh-completions.git "$ZSH_CUSTOM_DIR/plugins/zsh-completions"
+# https://github.com/romkatv/powerlevel10k#oh-my-zsh
+git_sync https://github.com/romkatv/powerlevel10k.git "$ZSH_CUSTOM_DIR/themes/powerlevel10k"
 
 link "$DOTFILES/.zshrc" "$HOME/.zshrc"
 
