@@ -7,3 +7,12 @@
 [submodule "vim/plugged/ale"]
 	path = vim/plugged/ale
 	url = https://github.com/dense-analysis/ale.git
+[submodule "mojo.vim"]
+	path = mojo.vim
+	url = https://github.com/modular/mojo.vim.git
+[submodule "vim/plugged/fzf"]
+	path = vim/plugged/fzf
+	url = https://github.com/junegunn/fzf.git
+[submodule "vim/plugged/fzf.vim"]
+	path = vim/plugged/fzf.vim
+	url = https://github.com/junegunn/fzf.vim.git
