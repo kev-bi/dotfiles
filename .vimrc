@@ -89,6 +89,9 @@ set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
 " Hide buffers instead of closing them.
 set hidden
 
+" Only syntax highlight up to 120 characters for speed.
+set synmaxcol=120
+
 " PLUGINS ---------------------------------------------------------------- {{{
 
 " For https://github.com/junegunn/vim-plug/wiki/tips#automatic-installation
@@ -102,7 +105,10 @@ call plug#begin('~/.vim/plugged')
   Plug 'NLKNguyen/papercolor-theme'
   Plug 'preservim/nerdtree'
   Plug 'dense-analysis/ale'
+  Plug 'preservim/nerdtree'
   Plug 'rust-lang/rust.vim'
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+  Plug 'junegunn/fzf.vim'
 call plug#end()
 
 " }}}

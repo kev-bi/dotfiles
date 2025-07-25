@@ -10,3 +10,9 @@
 [submodule "vim/plugged/rust.vim"]
 	path = vim/plugged/rust.vim
 	url = git@github.com:rust-lang/rust.vim.git
+[submodule "vim/plugged/fzf"]
+	path = vim/plugged/fzf
+	url = https://github.com/junegunn/fzf.git
+[submodule "vim/plugged/fzf.vim"]
+	path = vim/plugged/fzf.vim
+	url = https://github.com/junegunn/fzf.vim.git
