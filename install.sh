@@ -77,6 +77,15 @@ if [[ -d $DOTFILES/oh-my-zsh/custom/themes ]]; then
   cp $DOTFILES/oh-my-zsh/custom/themes/* $HOME/.oh-my-zsh/custom/themes
 fi
 
+# https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md#oh-my-zsh
+git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+
+# https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md#oh-my-zsh
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
+
+# https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#oh-my-zsh
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+
 # Handle existing .zshrc file (if it exists); backup unless it's a soft link
 if [[ -f $HOME/.zshrc ]]; then
   if [[ ! -L $HOME/.zshrc ]]; then
@@ -111,6 +120,9 @@ if [[ -f $HOME/.vimrc ]]; then
 fi
 # Symlinks the .vimrc file from the .dotfiles
 ln -s $DOTFILES/.vimrc $HOME/.vimrc
+
+# Install Vim plugins
+vim +PlugInstall +qall
 
 echo "Setting up git..."
 
