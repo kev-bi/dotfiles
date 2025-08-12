@@ -147,13 +147,6 @@ fi
 # Symlinks the .tmux.conf file from the .dotfiles
 ln -s $DOTFILES/.tmux.conf $HOME/.tmux.conf
 
-# Check for magic and install if we don't have it
-if ! command -v magic >/dev/null 2>&1; then
-  echo "Installing magic..."
-
-  curl -ssL https://magic.modular.com/deb16053-d972-4668-8267-c3b15bf88019 | bash
-fi
-
 if [[ -n "${email+1}" ]]; then
   ssh-keygen -t ed25519 -C $email
   eval "$(ssh-agent -s)"

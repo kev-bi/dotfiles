@@ -109,12 +109,6 @@ export DOTFILES="$HOME/.dotfiles"
 # Set ".venv" as virtual env name for python plugin
 export PYTHON_VENV_NAME=".venv"
 
-# Put magic in the path
- export PATH="$HOME/.modular/bin:$PATH"
-
-# Enable auto-completion for magic,
-eval "$(magic completion --shell zsh)"
-
 # Generate the kubectl completion script for Zsh
 source <(kubectl completion zsh)
 
