@@ -162,9 +162,9 @@ ln -s $DOTFILES/.tmux.conf $HOME/.tmux.conf
 if [[ -n "${email+1}" ]]; then
   ssh-keygen -t ed25519 -C $email
   eval "$(ssh-agent -s)"
-  if [ $(uname) == "Darwin" ]; then
+  if [ $(uname) = "Darwin" ]; then
     ssh-add --apple-use-keychain ~/.ssh/id_ed25519
-  elif [ $(uname) == "Linux" ]; then
+  elif [ $(uname) = "Linux" ]; then
     ssh-add ~/.ssh/id_ed25519
   else
     echo "Unrecognized system, couldn't install setup ssh-key..."

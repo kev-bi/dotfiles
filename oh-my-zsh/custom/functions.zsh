@@ -31,8 +31,12 @@ argo_passwd() {
 
 # Easy way to login for AWS
 aws_plz() {
+  if [[ -z "$AWS_PWD" ]]; then
+    echo "AWS_PWD is not set"
+    return 1
+  fi
   aws-sso login
-  aws-sso-profile `aws-sso | fzf | awk -F ' *\\| *' '{print $7}'`
+  aws-sso-profile `echo ${AWS_PWD} | aws-sso | fzf | awk -F ' *| *' '{print $7}'`
 }
 
 # Install krew

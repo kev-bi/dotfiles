@@ -166,20 +166,17 @@ export PATH="$HOME/go/bin:$PATH"
 # Setting PATH for krew
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
-# Setting path for postgres
-export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin
-
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/opt/homebrew/share/google-cloud-sdk/path.zsh.inc' ]; then . '/opt/homebrew/share/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f '/home/linuxbrew/.linuxbrew/share/google-cloud-sdk/path.zsh.inc' ]; then . '/home/linuxbrew/.linuxbrew/share/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc' ]; then . '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc'; fi
+if [ -f '/home/linuxbrew/.linuxbrew/share/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/linuxbrew/.linuxbrew/share/google-cloud-sdk/completion.zsh.inc'; fi
 
 # Enable AWS autocomplete
-complete -C '/opt/homebrew/bin/aws_completer' aws
+complete -C '/home/linuxbrew/.linuxbrew/bin/aws_completer' aws
 
 # Enable Terraform autocomplete
-complete -o nospace -C /opt/homebrew/bin/terraform terraform
+complete -o nospace -C /home/linuxbrew/.linuxbrew/bin/terraform terraform
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
@@ -235,7 +232,7 @@ _fzf_complete_stog() { _fzf_complete_bazel_test "$@" }
 
 __aws_sso_profile_complete() {
      local _args=${AWS_SSO_HELPER_ARGS:- -L error}
-    _multi_parts : "($(/opt/homebrew/bin/aws-sso ${=_args} list --csv Profile))"
+    _multi_parts : "($(/home/linuxbrew/.linuxbrew/bin/aws-sso ${=_args} list --csv Profile))"
 }
 
 aws-sso-profile() {
@@ -250,7 +247,7 @@ aws-sso-profile() {
         return 1
     fi
 
-    eval $(/opt/homebrew/bin/aws-sso ${=_args} eval -p "$1")
+    eval $(/home/linuxbrew/.linuxbrew/bin/aws-sso ${=_args} eval -p "$1")
     if [ "$AWS_SSO_PROFILE" != "$1" ]; then
         return 1
     fi
@@ -262,10 +259,10 @@ aws-sso-clear() {
         echo "AWS_SSO_PROFILE is not set"
         return 1
     fi
-    eval $(/opt/homebrew/bin/aws-sso ${=_args} eval -c)
+    eval $(/home/linuxbrew/.linuxbrew/bin/aws-sso ${=_args} eval -c)
 }
 
 compdef __aws_sso_profile_complete aws-sso-profile
-complete -C /opt/homebrew/bin/aws-sso aws-sso
+complete -C /home/linuxbrew/.linuxbrew/bin/aws-sso aws-sso
 
 # END_AWS_SSO_CLI
