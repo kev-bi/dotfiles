@@ -1,13 +1,13 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""               
-"               
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
 "               ██╗   ██╗██╗███╗   ███╗██████╗  ██████╗
 "               ██║   ██║██║████╗ ████║██╔══██╗██╔════╝
-"               ██║   ██║██║██╔████╔██║██████╔╝██║     
-"               ╚██╗ ██╔╝██║██║╚██╔╝██║██╔══██╗██║     
+"               ██║   ██║██║██╔████╔██║██████╔╝██║
+"               ╚██╗ ██╔╝██║██║╚██╔╝██║██╔══██╗██║
 "                ╚████╔╝ ██║██║ ╚═╝ ██║██║  ██║╚██████╗
 "                 ╚═══╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝
-"               
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Disable compatibility with vi which can cause unexpected issues.
 set nocompatible
@@ -109,29 +109,12 @@ call plug#end()
 
 " MAPPINGS --------------------------------------------------------------- {{{
 
-" Set the backslash as the leader key.
-let mapleader = ","
-
-" Press ,, to jump back to the last cursor position.
-nnoremap <leader>, ``
-
-" Type .. to exit insert mode quickly.
-inoremap .. <Esc>
-
 " Press the space bar to type the : character in command mode.
 nnoremap <space> :
-
-" Pressing the letter o will open a new line below the current one.
-" Exit insert mode after creating a new line above or below the current line.
-nnoremap o o<esc>
-nnoremap O O<esc>
 
 " Center the cursor vertically when moving to the next word during a search.
 nnoremap n nzz
 nnoremap N Nzz
-
-" Yank from cursor to the end of line.
-nnoremap Y y$
 
 " You can split the window in Vim by typing :split or :vsplit.
 " Navigate the split view easier by pressing CTRL+j, CTRL+k, CTRL+h, or CTRL+l.
@@ -203,18 +186,36 @@ set laststatus=2
 " }}}
 
 " ALE  ---------------------------------------------------------------- {{{
+
+" Autorun from uv
+let g:ale_python_auto_uv = 1
+
 " Linter
 let g:ale_linters = {
-  \ 'python': ['pylsp', 'ruff'],
+  \ 'python': ['pylsp', 'ruff', 'mypy'],
   \ 'go': ['gopls'],
-  \}
+\}
+
 " Formatter
-let g:ale_fixers = { "python": ["ruff_format"] }
+let g:ale_fixers = {
+    \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+    \ 'python': ['ruff', 'ruff_format'],
+    \ 'go': ['gofmt'],
+\}
+
+" Fix on save
+let g:ale_fix_on_save = 1
+
+" Better UI settings
+let g:ale_sign_error = '✗'
+let g:ale_sign_warning = '⚠'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_virtualtext_cursor = 1
+
 " }}}
 
 " Set the background tone.
 set background=dark
 
 " Set the color scheme.
-colorscheme PaperColor 
-
+colorscheme PaperColor
