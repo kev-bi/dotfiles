@@ -50,20 +50,19 @@ echo "Setting up zsh & oh-my-zsh..."
 # Check for zsh and install if we don't have it
 if ! command -v zsh >/dev/null 2>&1; then
   echo "Installing zsh..."
-
   brew install zsh
 
-  # Add zsh to the list of valid shells
-  echo "Adding the following path to the list of valid shells..."
+  echo "Adding zsh to the list of valid shells..."
   command -v zsh | sudo tee -a /etc/shells
+
+  echo "Setting zsh as default shell..."
+  chsh -s $(which zsh)
 fi
 
 # Check for Oh My Zsh and install if we don't have it
 if [[ ! -n $ZSH ]]; then
   echo "Installing oh-my-zsh..."
-  echo "NOTICE: Once zsh is set up you may need to log out and log in..."
-
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/HEAD/tools/install.sh)"
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
 
 # Copy over dotfiles custom directory files and subdirectories to the
@@ -76,6 +75,12 @@ fi
 if [[ -d $DOTFILES/oh-my-zsh/custom/themes ]]; then
   cp $DOTFILES/oh-my-zsh/custom/themes/* $HOME/.oh-my-zsh/custom/themes
 fi
+
+# https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md#oh-my-zsh
+git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+
+# https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md#oh-my-zsh
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
 
 # Handle existing .zshrc file (if it exists); backup unless it's a soft link
 if [[ -f $HOME/.zshrc ]]; then
