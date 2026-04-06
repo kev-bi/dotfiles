@@ -100,9 +100,9 @@ endif
 
 call plug#begin('~/.vim/plugged')
   Plug 'NLKNguyen/papercolor-theme'
-  Plug 'dense-analysis/ale'
   Plug 'preservim/nerdtree'
-  Plug 'ziglang/zig.vim'
+  Plug 'dense-analysis/ale'
+  Plug 'rust-lang/rust.vim'
 call plug#end()
 
 " }}}
@@ -149,6 +149,9 @@ augroup cursor_off
     autocmd WinEnter * set cursorline cursorcolumn
 augroup END
 
+" }}}
+
+" NERDTREE -------------------------------------------------------------- {{{
 " Start NERDTree when Vim is started without file arguments.
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
@@ -194,6 +197,7 @@ let g:ale_python_auto_uv = 1
 let g:ale_linters = {
   \ 'python': ['pylsp', 'ruff', 'mypy'],
   \ 'go': ['gopls'],
+  \ 'rust': ['analyzer'],
 \}
 
 " Formatter
@@ -201,6 +205,7 @@ let g:ale_fixers = {
     \ '*': ['remove_trailing_lines', 'trim_whitespace'],
     \ 'python': ['ruff', 'ruff_format'],
     \ 'go': ['gofmt'],
+    \ 'rust': ['rustfmt', 'trim_whitespace', 'remove_trailing_lines'],
 \}
 
 " Fix on save
@@ -211,6 +216,29 @@ let g:ale_sign_error = '✗'
 let g:ale_sign_warning = '⚠'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_virtualtext_cursor = 1
+
+" As-you-type autocomplete
+set completeopt=menu,menuone,preview,noselect,noinsert
+let g:ale_completion_enabled = 1
+
+" Define LSP-specific mappings and settings
+function! ALELSPMappings()
+    " <buffer> limits these to the current file; nnoremap prevents recursion
+    nnoremap <buffer> gr :ALEFindReferences<CR>
+    nnoremap <buffer> gd :ALEGoToDefinition<CR>
+    nnoremap <buffer> gy :ALEGoToTypeDefinition<CR>
+    nnoremap <buffer> gh :ALEHover<CR>
+    nnoremap <buffer> K  :ALEDocumentation<CR>
+
+    " Use ALE's completion logic for omnifunc (Ctrl-x Ctrl-o)
+    setlocal omnifunc=ale#completion#OmniFunc
+endfunction
+
+augroup MyALEMappings
+    autocmd!
+    " Trigger only after the LSP handshake is successful
+    autocmd User ALELSPStarted call ALELSPMappings()
+augroup END
 
 " }}}
 

@@ -6,4 +6,7 @@
 	url = git@github.com:NLKNguyen/papercolor-theme.git
 [submodule "vim/plugged/ale"]
 	path = vim/plugged/ale
-	url = https://github.com/dense-analysis/ale.git
+	url = git@github.com:dense-analysis/ale.git
+[submodule "vim/plugged/rust.vim"]
+	path = vim/plugged/rust.vim
+	url = git@github.com:rust-lang/rust.vim.git
