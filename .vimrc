@@ -9,17 +9,22 @@
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" Start from Vim's recommended defaults (backspace, ttimeout, restoring the
+" cursor position, ...). They're skipped whenever a vimrc exists.
+unlet! skip_defaults_vim
+if filereadable(expand('$VIMRUNTIME/defaults.vim'))
+    source $VIMRUNTIME/defaults.vim
+endif
+
 " Disable compatibility with vi which can cause unexpected issues.
 set nocompatible
 
-" Enable type file detection. Vim will be able to try to detect the type of file is use.
-filetype on
+" Use UTF-8 everywhere (needed for the ALE signs below).
+set encoding=utf-8
+scriptencoding utf-8
 
-" Enable plugins and load plugin for the detected file type.
-filetype plugin on
-
-" Load an indent file for the detected file type.
-filetype indent on
+" Enable file type detection, plugins and indent files for the detected type.
+filetype plugin indent on
 
 " Turn syntax highlighting on.
 syntax on
@@ -44,6 +49,26 @@ set expandtab
 
 " Do not save backup files.
 set nobackup
+set nowritebackup
+
+" Keep swap files out of the working directory.
+set directory=~/.vim/swap//
+if !isdirectory(expand('~/.vim/swap'))
+    call mkdir(expand('~/.vim/swap'), 'p', 0700)
+endif
+
+" Reload files changed outside of Vim.
+set autoread
+
+" Open new splits to the right and below.
+set splitright
+set splitbelow
+
+" Always show the sign column so ALE signs don't shift the text.
+set signcolumn=yes
+
+" Update signs and diagnostics faster (default is 4000ms).
+set updatetime=300
 
 " Do not let cursor scroll below or above N number of lines when scrolling.
 set scrolloff=10
@@ -67,14 +92,14 @@ set showcmd
 " Show the mode you are on the last line.
 set showmode
 
-" Show matching words during a search.
+" Briefly jump to the matching bracket when inserting one.
 set showmatch
 
 " Use highlighting when doing a search.
 set hlsearch
 
-" Set the commands to save in history default number is 20.
-" set history=1000
+" Set the commands to save in history.
+set history=1000
 
 " Enable auto completion menu after pressing TAB.
 set wildmenu
@@ -95,8 +120,15 @@ set hidden
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
   silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
+
+" Install any missing plugins on startup.
+augroup plug_auto_install
+    autocmd!
+    autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+        \| PlugInstall --sync | source $MYVIMRC
+    \| endif
+augroup END
 
 call plug#begin('~/.vim/plugged')
   Plug 'NLKNguyen/papercolor-theme'
@@ -123,6 +155,9 @@ nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
 
+" <c-l> no longer redraws, so clear search highlighting with \/ instead.
+nnoremap <silent> <leader>/ :nohlsearch<CR>
+
 "}}}
 
 " VIMSCRIPT -------------------------------------------------------------- {{{
@@ -133,10 +168,13 @@ augroup filetype_vim
     autocmd FileType vim setlocal foldmethod=marker
 augroup END
 
-" If Vim version is equal to or greater than 7.3 enable undofile.
+" Enable undofile.
 " This allows you to undo changes to a file even after saving it.
-if version >= 703
+if has('persistent_undo')
     set undodir=~/.vim/backup
+    if !isdirectory(expand(&undodir))
+        call mkdir(expand(&undodir), 'p', 0700)
+    endif
     set undofile
     set undoreload=10000
 endif
@@ -152,20 +190,22 @@ augroup END
 " }}}
 
 " NERDTREE -------------------------------------------------------------- {{{
-" Start NERDTree when Vim is started without file arguments.
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
+augroup nerdtree_config
+    autocmd!
+    " Start NERDTree when Vim is started without file arguments.
+    autocmd StdinReadPre * let s:std_in=1
+    autocmd VimEnter * if argc() == 0 && !exists('s:std_in') && exists(':NERDTree') | NERDTree | endif
 
-" Start NERDTree when Vim starts with a directory argument.
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
-    \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
+    " Start NERDTree when Vim starts with a directory argument.
+    autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') && exists(':NERDTree') |
+        \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
 
-" Exit Vim if NERDTree is the only window remaining in the only tab.
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
+    " Exit Vim if NERDTree is the only window remaining in the only tab.
+    autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
 
-" Close the tab if NERDTree is the only window remaining in it.
-autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
+    " Close the tab if NERDTree is the only window remaining in it.
+    autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
+augroup END
 
 " }}}
 
@@ -245,5 +285,5 @@ augroup END
 " Set the background tone.
 set background=dark
 
-" Set the color scheme.
-colorscheme PaperColor
+" Set the color scheme (silently, in case plugins aren't installed yet).
+silent! colorscheme PaperColor

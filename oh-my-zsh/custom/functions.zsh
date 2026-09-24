@@ -4,20 +4,3 @@ add_to_path() {
     export PATH="$1:$PATH"
   fi
 }
-
-# Function wrapping the dotfiles custom dir copy over commands
-cp_zsh_custom() {
-  cp $DOTFILES/oh-my-zsh/custom/*(.) ${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}
-  if [[ -d $DOTFILES/oh-my-zsh/custom/plugins ]]; then
-    files=("$DOTFILES/oh-my-zsh/custom/plugins"/*(ND))
-    if [[ ${#files[@]} -gt 0 ]]; then
-      cp -r $DOTFILES/oh-my-zsh/custom/plugins/* ${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom/plugins}
-    fi
-  fi
-  if [[ -d $DOTFILES/oh-my-zsh/custom/themes ]]; then
-    files=("$DOTFILES/oh-my-zsh/custom/themes"/*(ND))
-    if [[ ${#files[@]} -gt 0 ]]; then
-      cp $DOTFILES/oh-my-zsh/custom/themes/* ${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom/themes}
-    fi
-  fi
-}
