@@ -273,9 +273,13 @@ fi
 link "$DOTFILES/.gitconfig" "$HOME/.gitconfig"
 link "$DOTFILES/git/ignore" "$XDG_CONFIG_HOME/git/ignore"
 
-# zdiff3 needs git >= 2.35 (e.g. Ubuntu 22.04 ships 2.34); fall back to diff3.
+# zdiff3 needs git >= 2.35 (e.g. Ubuntu 22.04 ships 2.34). It is set here
+# rather than in the shared config because older git rejects an unknown
+# conflictStyle while reading the config, before any override can apply.
 git_version="$(git --version | awk '{print $3}')"
-if [[ "$(printf '%s\n' 2.35 "$git_version" | sort -V | head -n1)" != 2.35 ]]; then
+if [[ "$(printf '%s\n' 2.35 "$git_version" | sort -V | head -n1)" == 2.35 ]]; then
+  git config --file "$HOME/.gitconfig.local" merge.conflictStyle zdiff3
+else
   git config --file "$HOME/.gitconfig.local" merge.conflictStyle diff3
 fi
 

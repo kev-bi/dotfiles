@@ -21,8 +21,6 @@
 	updateRefs = true
 	autoStash = true
 	autoSquash = true
-[merge]
-	conflictStyle = zdiff3
 [diff]
 	algorithm = histogram
 	colorMoved = default
