@@ -1,21 +1,19 @@
 # Install
 
-1. Clone this repo to `~/.dotfiles`
+Works on macOS and Linux (apt, dnf, yum, pacman, zypper, apk). The install
+script is idempotent, so re-run it any time to pick up changes or update
+plugins.
+
+1. Clone this repo to `~/.dotfiles` (HTTPS works before you have an ssh key)
 
     ```
-    git clone --recurse-submodules git@github.com:kev-bi/dotfiles.git ~/.dotfiles
+    git clone https://github.com/kev-bi/dotfiles.git ~/.dotfiles
     ```
 
-    Update any submodules if needed
+2. Run the install script (don't `source` it)
 
     ```
-    git submodule update --remote
-    ```
-
-2. Run the install script
-
-    ```
-    cd ~/.dotfiles && source install.sh
+    ~/.dotfiles/install.sh
     ```
 
     Pass the following flag to install the packages in the Brewfile
@@ -28,9 +26,40 @@
     -sk|--ssh-keygen "your_email@example.com"
     ```
 
-3. [Generate](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) a new ssh key if you didn't pass the `-sk` or `--ssh-key` flag in the previous step
+3. [Generate](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) a new ssh key if you didn't pass the `-sk` or `--ssh-keygen` flag in the previous step
 
-4. [Add](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) the new ssh key to your github account
+4. [Add](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) the new ssh key to your github account, then switch the remote to ssh
+
+    ```
+    git -C ~/.dotfiles remote set-url origin git@github.com:kev-bi/dotfiles.git
+    ```
+
+## What gets installed
+
+| Repo file | Linked to |
+| --- | --- |
+| `.zshrc` | `~/.zshrc` |
+| `oh-my-zsh/custom/*` | `~/.oh-my-zsh/custom/*` |
+| `.vimrc`, `vim/` | `~/.vimrc`, `~/.vim` |
+| `.tmux.conf` | `~/.tmux.conf` |
+| `.gitconfig` | `~/.gitconfig` |
+| `git/ignore` | `~/.config/git/ignore` (global gitignore) |
+
+Anything already at those paths is moved aside with a `.dfsave.<timestamp>`
+suffix. An existing real `~/.gitconfig` is moved to `~/.gitconfig.local`
+instead, so its settings keep applying.
+
+## Machine-specific settings
+
+These files are loaded if present and are not tracked:
+
+- `~/.zshrc.local`: extra shell config (work env vars, secrets, ...)
+- `~/.gitconfig.local`: git overrides, e.g. a work email or signing program
+
+    ```
+    [user]
+    	email = you@work.com
+    ```
 
 # Troubleshooting
 
@@ -50,7 +79,7 @@ In this case you will need to follow these directions to install some additional
 
 ## Setting up Go LSP
 
-1. Install gopls with `go get -v golang.org/x/tools/gopl`
+1. Install gopls with `go install golang.org/x/tools/gopls@latest`
 
 ## Setting up Python Linting and LSP
 
@@ -60,11 +89,14 @@ In this case you will need to follow these directions to install some additional
 
 ## Installing new plugins
 
-1. Save the .vimrc file - `:w`
+1. Add a `Plug '...'` line to the plugin section of the .vimrc and save it - `:w`
 
 2. Source the .vimrc file - `:source ~/.vimrc`
 
 3. `:PlugInstall`
+
+Plugins live in `vim/plugged/`, which is gitignored. `:PlugUpdate` updates
+them, and `:PlugSnapshot` writes a script that pins the current versions.
 
 # Acknowledgements / Resources
 

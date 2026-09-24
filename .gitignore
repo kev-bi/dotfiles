@@ -1,6 +1,8 @@
-# vim backup files #
+# vim plugins (managed by vim-plug), undo history and swap files #
 ######################
+vim/plugged/
 vim/backup/
+vim/swap/
 
 # OS generated files #
 ######################
