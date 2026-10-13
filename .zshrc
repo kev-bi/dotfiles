@@ -15,6 +15,13 @@ for brew_bin in /opt/homebrew/bin/brew /usr/local/bin/brew \
 done
 unset brew_bin
 
+# brew shellenv runs `export FPATH`, which hands this shell's function dirs to
+# every child process. A different zsh started from here (e.g. `exec zsh` going
+# from the system zsh to Homebrew's) would then load the other version's
+# completion functions and fail with `_arguments:comparguments: not enough
+# arguments`. Unexported, each zsh starts from its own compiled-in fpath.
+typeset +x FPATH
+
 path=("$HOME/.local/bin" "$HOME/bin" $path)
 path=($^path(N-/))  # drop directories that don't exist
 

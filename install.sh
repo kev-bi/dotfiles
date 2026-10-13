@@ -164,6 +164,10 @@ install_core_packages() {
   for cmd in git curl zsh vim tmux; do
     have "$cmd" || missing+=("$cmd")
   done
+  # Alpine's busybox has neither chsh nor usermod to set the login shell.
+  if ! have chsh && ! have usermod && have apk; then
+    missing+=(shadow)
+  fi
   [[ ${#missing[@]} -eq 0 ]] && return 0
 
   info "Installing ${missing[*]}..."
@@ -191,27 +195,79 @@ fi
 
 info "Setting up zsh & Oh My Zsh..."
 
-login_shell() {
-  if [[ "$OS" == Darwin ]]; then
-    dscl . -read "/Users/$(id -un)" UserShell 2>/dev/null | awk '{print $2}'
+# Prefer Homebrew's zsh when it's installed, so the login shell is the same
+# zsh that `zsh` on PATH runs (brew's bin dir comes first in PATH).
+load_brew || true
+
+preferred_zsh() {
+  if [[ -n "${HOMEBREW_PREFIX:-}" && -x "$HOMEBREW_PREFIX/bin/zsh" ]]; then
+    printf '%s\n' "$HOMEBREW_PREFIX/bin/zsh"
+  elif have zsh; then
+    command -v zsh
   else
-    getent passwd "$(id -un)" 2>/dev/null | cut -d: -f7
+    return 1
   fi
 }
 
-current_shell="$(login_shell || true)"
-if [[ "$(basename "${current_shell:-}")" != zsh ]]; then
-  zsh_path="$(command -v zsh)"
-  if ! grep -qxF "$zsh_path" /etc/shells 2>/dev/null; then
-    info "Adding $zsh_path to /etc/shells..."
-    printf '%s\n' "$zsh_path" | as_root tee -a /etc/shells >/dev/null || true
-  fi
-  info "Setting zsh as the default shell..."
-  if have chsh; then
-    chsh -s "$zsh_path" || as_root chsh -s "$zsh_path" "$(id -un)" \
-      || warn "Couldn't change the login shell; run: chsh -s $zsh_path"
+login_shell() {
+  if [[ "$OS" == Darwin ]]; then
+    dscl . -read "/Users/$(id -un)" UserShell 2>/dev/null | awk '{print $2}'
+  elif have getent; then
+    getent passwd "$(id -un)" 2>/dev/null | cut -d: -f7
   else
-    warn "chsh not found; set your login shell to $zsh_path manually"
+    awk -F: -v u="$(id -un)" '$1 == u { print $7 }' /etc/passwd
+  fi
+}
+
+# Run as yourself, chsh asks for your own password, which can't work without a
+# terminal or on accounts that have no password (cloud VMs, ssh-key or SSO
+# logins). So go through root when that doesn't need a prompt, and only fall
+# back to chsh's own prompt when someone is there to answer it.
+change_login_shell() {
+  local shell="$1" user
+  user="$(id -un)"
+  if [[ $EUID -ne 0 ]] && ! { have sudo && sudo -n true 2>/dev/null; }; then
+    if [[ -t 0 ]] && have chsh && chsh -s "$shell"; then
+      return 0
+    fi
+  fi
+  if have chsh; then
+    as_root chsh -s "$shell" "$user"
+  elif have usermod; then
+    # RHEL/Rocky 9 ship chsh separately (util-linux-user).
+    as_root usermod -s "$shell" "$user"
+  else
+    return 1
+  fi
+}
+
+zsh_path="$(preferred_zsh)" || die "zsh is not installed"
+# Use the spelling /etc/shells already has for this binary, if any (Fedora's
+# PATH finds zsh as /usr/sbin/zsh, which is a symlink to /usr/bin).
+if [[ -f /etc/shells ]]; then
+  while IFS= read -r shell_entry; do
+    if [[ "$shell_entry" == /* && "$shell_entry" -ef "$zsh_path" ]]; then
+      zsh_path="$shell_entry"
+      break
+    fi
+  done </etc/shells
+fi
+current_shell="$(login_shell || true)"
+# Compare files rather than strings: with a merged /usr, /bin/zsh and
+# /usr/bin/zsh are the same binary, and a string compare would rerun chsh
+# (and prompt for a password) on every install.
+if [[ ! "$current_shell" -ef "$zsh_path" ]]; then
+  if [[ "$OS" == Linux ]] && ! grep -q "^$(id -un):" /etc/passwd; then
+    # The account comes from LDAP/SSSD/NIS, where chsh can't change it.
+    warn "Login shell is managed outside /etc/passwd; ask your admin to set it to $zsh_path"
+  else
+    if [[ -f /etc/shells ]] && ! grep -qxF "$zsh_path" /etc/shells; then
+      info "Adding $zsh_path to /etc/shells..."
+      printf '%s\n' "$zsh_path" | as_root tee -a /etc/shells >/dev/null || true
+    fi
+    info "Setting login shell to $zsh_path..."
+    change_login_shell "$zsh_path" \
+      || warn "Couldn't change the login shell; run: chsh -s $zsh_path"
   fi
 fi
 
@@ -322,5 +378,7 @@ info "Done!"
 
 # Start a fresh zsh with the new config, but only when someone's watching.
 if [[ -t 0 && -t 1 ]]; then
-  exec zsh -l
+  # A parent zsh may have exported its FPATH; let the new zsh use its own.
+  unset FPATH
+  exec "$zsh_path" -l
 fi
